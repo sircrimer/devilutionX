@@ -203,19 +203,19 @@ msgstr ""
 
 #: Source/DiabloUI/credits_lines.cpp:167
 msgid "Special Thanks To"
-msgstr ""
+msgstr "Besonderer Dank gebührt "
 
 #: Source/DiabloUI/credits_lines.cpp:171
 msgid "Thanks To"
-msgstr ""
+msgstr "Der Dank geht an"
 
 #: Source/DiabloUI/credits_lines.cpp:200
 msgid "In memory of"
-msgstr ""
+msgstr "In Gedenken an"
 
 #: Source/DiabloUI/credits_lines.cpp:206
 msgid "Very Special Thanks to"
-msgstr ""
+msgstr "Ganz herzlichen Dank auch an"
 
 #: Source/DiabloUI/credits_lines.cpp:212
 msgid "General Manager"
@@ -391,47 +391,49 @@ msgid "Select Connection"
 msgstr ""
 
 #: Source/DiabloUI/selconn.cpp:69
+#, fuzzy
 msgid "Change Gateway"
-msgstr ""
+msgstr "Gateway anpassen"
 
 #: Source/DiabloUI/selconn.cpp:108
 msgid "All computers must be connected to a TCP-compatible network."
-msgstr ""
+msgstr "Alle Computer müssen an ein TCP fähiges Netzwerk angeschlossen sein."
 
 #: Source/DiabloUI/selconn.cpp:112
 msgid "All computers must be connected to the internet."
-msgstr ""
+msgstr "Alle Computer müssen mit dem Internet verbunden sein."
 
 #: Source/DiabloUI/selconn.cpp:116
 msgid "Play by yourself with no network exposure."
-msgstr ""
+msgstr "Spiel allein und ohne Netzverbindung."
 
 #: Source/DiabloUI/selconn.cpp:121
+#, fuzzy
 msgid "Players Supported: {:d}"
-msgstr ""
+msgstr "Unterstützte Spieler: {:d}"
 
 #: Source/DiabloUI/selgame.cpp:87 Source/DiabloUI/selgame.cpp:382
 msgid "Description:"
-msgstr ""
+msgstr "Beschreibung:"
 
 #: Source/DiabloUI/selgame.cpp:93
 msgid "Select Action"
-msgstr ""
+msgstr "Aktion auswählen"
 
 #: Source/DiabloUI/selgame.cpp:95 Source/DiabloUI/selgame.cpp:158
 #: Source/DiabloUI/selgame.cpp:302
 msgid "Create Game"
-msgstr ""
+msgstr "Spiel erstellen"
 
 #: Source/DiabloUI/selgame.cpp:96
 msgid "Join Game"
-msgstr ""
+msgstr "Spiel beitreten"
 
 #: Source/DiabloUI/selgame.cpp:104 Source/DiabloUI/selgame.cpp:173
 #: Source/DiabloUI/selgame.cpp:191 Source/DiabloUI/selgame.cpp:324
 #: Source/DiabloUI/selgame.cpp:397
 msgid "CANCEL"
-msgstr ""
+msgstr "ABBRUCH"
 
 #: Source/DiabloUI/selgame.cpp:113
 msgid "Create a new game with a difficulty setting of your choice."
