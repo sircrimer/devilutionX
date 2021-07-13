@@ -33,6 +33,19 @@ struct MissilePosition {
 	Point start;
 	/** Start position */
 	Displacement traveled;
+
+	/**
+      * @brief Specifies the location (tile) while rendering
+      */
+	Point tileForRendering;
+	/**
+      * @brief Specifies the location (offset) while rendering
+      */
+	Displacement offsetForRendering;
+	/**
+      * @brief tileForRendering and offsetForRendering shouldn't be updated while rendering. This is needed for explosion.
+      */
+	bool renderingIsFixed;
 };
 
 /*
@@ -104,10 +117,10 @@ struct MissileStruct {
 	bool limitReached;
 };
 
-extern int missileactive[MAXMISSILES];
-extern int missileavail[MAXMISSILES];
-extern MissileStruct missile[MAXMISSILES];
-extern int nummissiles;
+extern MissileStruct Missiles[MAXMISSILES];
+extern int AvailableMissiles[MAXMISSILES];
+extern int ActiveMissiles[MAXMISSILES];
+extern int ActiveMissileCount;
 extern bool MissilePreFlag;
 
 void GetDamageAmt(int i, int *mind, int *maxd);
@@ -116,7 +129,6 @@ Direction16 GetDirection16(Point p1, Point p2);
 void DeleteMissile(int mi, int i);
 bool MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, bool shift);
 bool PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, bool shift, int earflag, bool *blocked);
-void SetMissAnim(int mi, int animtype);
 void SetMissDir(int mi, int dir);
 void LoadMissileGFX(BYTE mi);
 void InitMissileGFX();

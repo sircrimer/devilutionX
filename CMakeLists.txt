@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 
+if(POLICY CMP0092)
+  cmake_policy(SET CMP0092 NEW)
+endif()
 if(POLICY CMP0083)
   cmake_policy(SET CMP0083 NEW)
 endif()
@@ -521,9 +524,6 @@ if(RUN_TESTS)
     test/dead_test.cpp
     test/diablo_test.cpp
     test/drlg_l1_test.cpp
-    test/drlg_l2_test.cpp
-    test/drlg_l3_test.cpp
-    test/drlg_l4_test.cpp
     test/effects_test.cpp
     test/file_util_test.cpp
     test/inv_test.cpp
@@ -581,6 +581,7 @@ if(RUN_TESTS)
   include(CTest)
   include(GoogleTest)
   find_package(GTest REQUIRED)
+  add_definitions(-DRUN_TESTS)
   target_include_directories(devilutionx-tests PRIVATE ${GTEST_INCLUDE_DIRS})
   target_link_libraries(devilutionx-tests PRIVATE libdevilutionx)
   target_link_libraries(devilutionx-tests PRIVATE ${GTEST_LIBRARIES})
@@ -832,7 +833,7 @@ if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-  target_compile_options(libdevilutionx PUBLIC "/W2")
+  target_compile_options(libdevilutionx PUBLIC "/W3")
   target_compile_options(libdevilutionx PUBLIC "/Zc:__cplusplus")
 endif()
 

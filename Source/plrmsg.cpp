@@ -24,8 +24,6 @@ const UiFlags TextColorFromPlayerId[MAX_PLRS + 1] = { UIS_SILVER, UIS_SILVER, UI
 
 void plrmsg_delay(bool delay)
 {
-	int i;
-	_plrmsg *pMsg;
 	static DWORD plrmsgTicks;
 
 	if (delay) {
@@ -34,8 +32,8 @@ void plrmsg_delay(bool delay)
 	}
 
 	plrmsgTicks += SDL_GetTicks();
-	pMsg = plr_msgs;
-	for (i = 0; i < PMSG_COUNT; i++, pMsg++)
+	_plrmsg *pMsg = plr_msgs;
+	for (int i = 0; i < PMSG_COUNT; i++, pMsg++)
 		pMsg->time += plrmsgTicks;
 }
 
@@ -70,18 +68,17 @@ void SendPlrMsg(int pnum, const char *pszStr)
 	plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
 	pMsg->player = pnum;
 	pMsg->time = SDL_GetTicks();
-	assert(strlen(plr[pnum]._pName) < PLR_NAME_LEN);
+	assert(strlen(Players[pnum]._pName) < PLR_NAME_LEN);
 	assert(strlen(pszStr) < MAX_SEND_STR_LEN);
-	strcpy(pMsg->str, fmt::format(_(/* TRANSLATORS: Shown if player presses "v" button. {:s} is player name, {:d} is level, {:s} is location */ "{:s} (lvl {:d}): {:s}"), plr[pnum]._pName, plr[pnum]._pLevel, pszStr).c_str());
+	strcpy(pMsg->str, fmt::format(_(/* TRANSLATORS: Shown if player presses "v" button. {:s} is player name, {:d} is level, {:s} is location */ "{:s} (lvl {:d}): {:s}"), Players[pnum]._pName, Players[pnum]._pLevel, pszStr).c_str());
 }
 
 void ClearPlrMsg()
 {
-	int i;
 	_plrmsg *pMsg = plr_msgs;
 	DWORD tick = SDL_GetTicks();
 
-	for (i = 0; i < PMSG_COUNT; i++, pMsg++) {
+	for (int i = 0; i < PMSG_COUNT; i++, pMsg++) {
 		if ((int)(tick - pMsg->time) > 10000)
 			pMsg->str[0] = '\0';
 	}
@@ -106,13 +103,12 @@ static void PrintPlrMsg(const Surface &out, int x, int y, int width, char *text,
 
 void DrawPlrMsg(const Surface &out)
 {
-	int i;
 	DWORD x = 10;
 	DWORD y = 70;
 	DWORD width = gnScreenWidth - 20;
 	_plrmsg *pMsg;
 
-	if (chrflag || questlog) {
+	if (chrflag || QuestLogIsOpen) {
 		x += SPANEL_WIDTH;
 		width -= SPANEL_WIDTH;
 	}
@@ -123,7 +119,7 @@ void DrawPlrMsg(const Surface &out)
 		return;
 
 	pMsg = plr_msgs;
-	for (i = 0; i < PMSG_COUNT; i++) {
+	for (int i = 0; i < PMSG_COUNT; i++) {
 		if (pMsg->str[0] != '\0')
 			PrintPlrMsg(out, x, y, width, pMsg->str, TextColorFromPlayerId[pMsg->player]);
 		pMsg++;

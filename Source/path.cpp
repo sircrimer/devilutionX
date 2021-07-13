@@ -30,8 +30,18 @@ PATHNODE *pnode_tblptr[MAXPATHNODES];
 PATHNODE *path_2_nodes;
 
 /** For iterating over the 8 possible movement directions */
-const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
-const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
+const Displacement PathDirs[8] = {
+	// clang-format off
+	{ -1, -1 },
+	{ -1,  1 },
+	{  1, -1 },
+	{  1,  1 },
+	{ -1,  0 },
+	{  0, -1 },
+	{  1,  0 },
+	{  0,  1 },
+	// clang-format on
+};
 
 /* data */
 
@@ -179,12 +189,11 @@ bool path_solid_pieces(PATHNODE *pPath, int dx, int dy)
  */
 bool path_get_path(bool (*posOk)(int, Point), int posOkArg, PATHNODE *pPath, int x, int y)
 {
-	for (int i = 0; i < 8; i++) {
-		int dx = pPath->position.x + pathxdir[i];
-		int dy = pPath->position.y + pathydir[i];
-		bool ok = posOk(posOkArg, { dx, dy });
-		if ((ok && path_solid_pieces(pPath, dx, dy)) || (!ok && dx == x && dy == y)) {
-			if (!path_parent_path(pPath, dx, dy, x, y))
+	for (auto dir : PathDirs) {
+		Point tile = pPath->position + dir;
+		bool ok = posOk(posOkArg, tile);
+		if ((ok && path_solid_pieces(pPath, tile.x, tile.y)) || (!ok && tile == Point { x, y })) {
+			if (!path_parent_path(pPath, tile.x, tile.y, x, y))
 				return false;
 		}
 	}
@@ -199,16 +208,13 @@ bool path_get_path(bool (*posOk)(int, Point), int posOkArg, PATHNODE *pPath, int
  */
 bool path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 {
-	int nextG;
-	PATHNODE *dxdy;
-	int i;
-
-	nextG = pPath->g + path_check_equal(pPath, dx, dy);
+	int nextG = pPath->g + path_check_equal(pPath, dx, dy);
 
 	// 3 cases to consider
 	// case 1: (dx,dy) is already on the frontier
-	dxdy = path_get_node1(dx, dy);
+	PATHNODE *dxdy = path_get_node1(dx, dy);
 	if (dxdy != nullptr) {
+		int i;
 		for (i = 0; i < 8; i++) {
 			if (pPath->Child[i] == nullptr)
 				break;
@@ -226,6 +232,7 @@ bool path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 		// case 2: (dx,dy) was already visited
 		dxdy = path_get_node2(dx, dy);
 		if (dxdy != nullptr) {
+			int i;
 			for (i = 0; i < 8; i++) {
 				if (pPath->Child[i] == nullptr)
 					break;
@@ -252,6 +259,7 @@ bool path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 			// add it to the frontier
 			path_next_node(dxdy);
 
+			int i;
 			for (i = 0; i < 8; i++) {
 				if (pPath->Child[i] == nullptr)
 					break;
@@ -316,16 +324,11 @@ void path_next_node(PATHNODE *pPath)
  */
 void path_set_coords(PATHNODE *pPath)
 {
-	PATHNODE *pathOld;
-	PATHNODE *pathAct;
-	int i;
-
 	path_push_active_step(pPath);
 	// while there are path nodes to check
 	while (gdwCurPathStep > 0) {
-		pathOld = path_pop_active_step();
-		for (i = 0; i < 8; i++) {
-			pathAct = pathOld->Child[i];
+		PATHNODE *pathOld = path_pop_active_step();
+		for (auto *pathAct : pathOld->Child) {
 			if (pathAct == nullptr)
 				break;
 
